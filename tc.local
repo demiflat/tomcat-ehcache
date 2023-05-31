@@ -1,0 +1,1 @@
+./terracotta/ehcache-clustered-3.10.8-kit/server/bin/start-tc-server.sh -f $(realpath .)/terracotta/tc-cluster.cfg

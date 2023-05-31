@@ -5,3 +5,4 @@ webapps
 logs
 conf/Catalina/localhost
 cookies
+terracotta/ehcache-clustered-3.10.8-kit

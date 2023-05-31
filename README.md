@@ -2,14 +2,15 @@
 
 ##### This project shows how to configure a simple servlet to run on Tomcat in Kubernetes with distributed session replication and Ehcache/Terracotta
 
-###### Tested configurations:
+###### Configurations:
  - [src/main/resources/ehcache.xml](src/main/resources/ehcache.xml)
   
-This is the servlet Ehcache implementation basic configuration file. Not distributed (yet). [^1]
+This is the servlet Ehcache implementation basic configuration file. Not distributed, test only [^1]
 
- - [src/main/resources/ehcache.distributed.xml](src/main/resources/ehcache.distributed.xml) 
+ <!-- - [src/main/resources/ehcache.distributed.xml](src/main/resources/ehcache.distributed.xml)  -->
+ - [terracotta/tc-cluster.cfg](terracotta/tc-cluster.cfg) 
 
-This will be the servlet Ehcache implementation distributed configuration file. [^2]
+This is the test Terracotta server configuration file. [^2]
 
 #### Running make will list build targets
 
@@ -19,7 +20,9 @@ Define environment variable $DOCKER_REGISTRY for the container registry used.
 
 ###### Local testing/Cluster testing tools
 
-This runs a local Redis server for development testing
+- [tc.local](tc.local)
+
+This runs a local Terracotta server for development testing after downloading and extracting the artifacts in [terracota/download.sh](terracota/download.sh)
 
 - [cli.newsession](cli.newsession)
   

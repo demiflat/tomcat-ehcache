@@ -14,5 +14,6 @@ var tomcatVersion = "10.1.8"
 dependencies {
     compileOnly("org.apache.tomcat:tomcat-catalina:${tomcatVersion}")
     compileOnly("org.apache.tomcat:tomcat-tribes:${tomcatVersion}")
-    compileOnly("org.ehcache:ehcache:3.10.8")
+    implementation("org.ehcache:ehcache:3.10.8")
+    implementation("org.ehcache:ehcache-clustered:3.10.8")
 }
