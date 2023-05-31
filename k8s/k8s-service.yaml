@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: ${DEPLOYMENT}
+  name: ${DEPLOYMENT}
+spec:
+  ports:
+  - name: ${DEPLOYMENT_PORT}-${DEPLOYMENT_PORT}
+    port: ${DEPLOYMENT_PORT}
+    protocol: TCP
+    targetPort: ${DEPLOYMENT_PORT}
+  selector:
+    app: ${DEPLOYMENT}
+  # sessionAffinity: ClientIP
+  sessionAffinity: None
+  type: ClusterIP

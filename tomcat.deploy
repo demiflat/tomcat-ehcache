@@ -1,0 +1,1 @@
+java $JAVA_OPTS -jar tomcat.jar --war /deployments/webapps/ehcache.war --path tomcat

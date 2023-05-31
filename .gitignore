@@ -1,0 +1,7 @@
+.gradle
+.idea
+build
+webapps
+logs
+conf/Catalina/localhost
+cookies
