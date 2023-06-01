@@ -60,10 +60,10 @@ public class ClusteredServlet extends HttpServlet {
                   String.class,
                   Serializable.class,
                   ResourcePoolsBuilder.newResourcePoolsBuilder()
-                      .heap(20, MemoryUnit.MB)
+                      .heap(8, MemoryUnit.MB)
                       .with(
                           ClusteredResourcePoolBuilder.clusteredDedicated(
-                              ORBEON, 8, MemoryUnit.MB)))
+                              ORBEON, 10, MemoryUnit.MB)))
               .add(ClusteredStoreConfigurationBuilder.withConsistency(Consistency.STRONG))
               .build();
       cache = cacheManager.createCache(cacheName, cfg);
