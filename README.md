@@ -5,14 +5,15 @@
 ###### Configurations:
  - [src/main/resources/ehcache.xml](src/main/resources/ehcache.xml)
   
-This is the servlet Ehcache implementation basic configuration file. Not distributed, test only [^1]
+This is the servlet Ehcache implementation basic configuration file. Not distributed, local test only [^1]
 
-Unfortunately for the distributed test, the current configuration is via code [^code]
+ - [src/main/resources/ehcache.distributed.xml](src/main/resources/ehcache.distributed.xml) 
 
- <!-- - [src/main/resources/ehcache.distributed.xml](src/main/resources/ehcache.distributed.xml)  -->
+This is the servlet Ehcache implementation distributed configuration file. [^2]
+
  - [terracotta/tc-cluster.cfg](terracotta/tc-cluster.cfg) 
 
-This is the test Terracotta server configuration file. [^2]
+This is the test Terracotta server configuration file. [^3]
 
 #### Running make will list build targets
 
@@ -28,7 +29,7 @@ This runs a local Terracotta server for development testing after downloading an
 
 - [tc.activate](tc.activate)
   
-Before the Terracotta server can be used, it must first be activated! [^3]
+Before the Terracotta server can be used, it must first be activated! [^4]
 
 After activation it goes from this state:
 ```log
@@ -120,19 +121,21 @@ Content-Type: text/plain; charset=utf-8
 Kubernetes role, used to allow Tomcat to call Kubernetes API to get member list of other pods in the same namespace.
 
 [k8s/k8s-deployment.yaml](k8s/k8s-deployment.yaml) 
-Kubernetes deployment, set to create 3 replicas for testing.[^4]
+Kubernetes deployment, set to create 3 replicas for testing.[^5]
 
 [k8s/k8s-ingress.yaml](k8s/k8s-ingress.yaml) 
-Kubernetes ingress, used to expose deployment externally.[^5]
+Kubernetes ingress, used to expose deployment externally.[^6]
 
 [^1]: Ehcache [Config](https://www.ehcache.org/documentation/3.10/107.html)
 
-[^2]: Terracotta [Reference](https://documentation.softwareag.com/terracotta/terracotta_10-11/webhelp/index.html)
+[^2]: Ehcache [Clustering](https://www.ehcache.org/documentation/3.10/clustered-cache.html)
 
-[^3]: Terracotta [Config Tool](https://documentation.softwareag.com/terracotta/terracotta_10-11/webhelp/index.html#page/terracotta-db-webhelp%2Fco-srv_config_intro.html%23)
+[^3]: Terracotta [Reference](https://documentation.softwareag.com/terracotta/terracotta_10-11/webhelp/index.html)
 
-[^4]: Kubernetes [Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/)
+[^4]: Terracotta [Config Tool](https://documentation.softwareag.com/terracotta/terracotta_10-11/webhelp/index.html#page/terracotta-db-webhelp%2Fco-srv_config_intro.html%23)
 
-[^5]: Kubernetes [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/)
+[^5]: Kubernetes [Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/)
 
-[^code]: Ehcache [hardcoded](https://github.com/demiflat/tomcat-ehcache/blob/main/src/main/java/org/orbeon/session/tomcat/ClusteredServlet.java#L49-L69)
+[^6]: Kubernetes [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/)
+
+
