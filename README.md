@@ -7,6 +7,8 @@
   
 This is the servlet Ehcache implementation basic configuration file. Not distributed, test only [^1]
 
+Unfortunately for the distributed test, the current configuration is via code [^code]
+
  <!-- - [src/main/resources/ehcache.distributed.xml](src/main/resources/ehcache.distributed.xml)  -->
  - [terracotta/tc-cluster.cfg](terracotta/tc-cluster.cfg) 
 
@@ -132,3 +134,5 @@ Kubernetes ingress, used to expose deployment externally.[^5]
 [^4]: Kubernetes [Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/)
 
 [^5]: Kubernetes [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/)
+
+[^code]: Ehcache [hardcoded](https://github.com/demiflat/tomcat-ehcache/blob/main/src/main/java/org/orbeon/session/tomcat/ClusteredServlet.java#L49-L69)
