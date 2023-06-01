@@ -29,4 +29,3 @@ spec:
             port: ${DEPLOYMENT_PORT}
           initialDelaySeconds: 15
           periodSeconds: 5                 
-

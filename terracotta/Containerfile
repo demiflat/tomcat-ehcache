@@ -6,6 +6,8 @@ ADD ehcache.version /terracotta
 ADD tc-cluster.cfg /terracotta
 ADD tc.run /terracotta
 ADD tc.activate /terracotta
+ADD wait.sh /terracotta
+ADD terracotta /terracotta
 
 EXPOSE 9410
-ENTRYPOINT ["bash", "tc.run"]
+ENTRYPOINT ["bash", "terracotta"]

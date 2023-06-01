@@ -1,0 +1,11 @@
+#!/bin/bash
+
+set -m
+
+./tc.run &
+
+./wait.sh -h localhost -p 9410
+
+./tc.activate
+
+fg %1

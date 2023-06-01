@@ -1,1 +1,1 @@
-./terracotta/tools/bin/config-tool.sh activate -connect-to localhost:9410
+/terracotta/tools/bin/config-tool.sh activate -connect-to localhost:9410
