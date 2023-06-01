@@ -1,0 +1,11 @@
+FROM eclipse-temurin:11-jdk-jammy
+
+WORKDIR /terracotta
+COPY ehcache /terracotta
+ADD ehcache.version /terracotta
+ADD tc-cluster.cfg /terracotta
+ADD tc.run /terracotta
+ADD tc.activate /terracotta
+
+EXPOSE 9410
+ENTRYPOINT ["bash", "tc.run"]

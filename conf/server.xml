@@ -19,6 +19,12 @@
             connectionTimeout="20000"/>
         <Engine name="Catalina"
             defaultHost="localhost">
+            <Cluster className="org.apache.catalina.ha.tcp.SimpleTcpCluster">
+                <Channel className="org.apache.catalina.tribes.group.GroupChannel">
+                    <Membership className="org.apache.catalina.tribes.membership.cloud.CloudMembershipService"
+                        membershipProviderClassName="org.apache.catalina.tribes.membership.cloud.KubernetesMembershipProvider"/>
+                </Channel>
+            </Cluster>
             <Realm className="org.apache.catalina.realm.LockOutRealm">
                 <Realm className="org.apache.catalina.realm.UserDatabaseRealm"
                     resourceName="UserDatabase"/>

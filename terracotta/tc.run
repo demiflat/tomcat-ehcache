@@ -1,0 +1,1 @@
+/terracotta/server/bin/start-tc-server.sh -f /terracotta/tc-cluster.cfg
