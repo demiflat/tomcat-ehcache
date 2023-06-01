@@ -43,7 +43,7 @@ push: login docker
 > podman push $(TERRACOTTA_TAG)
 
 .PHONY: terracotta
-terracotta:
+terracotta: push
 > kubectl create deployment $(TERRACOTTA) --image=$(TERRACOTTA_TAG) --port $(TERRACOTTA_PORT) --replicas=1
 > kubectl create service clusterip $(TERRACOTTA) --tcp=$(TERRACOTTA_PORT):$(TERRACOTTA_PORT) 
 > kubectl get all
@@ -52,7 +52,7 @@ terracotta-destroy:
 > kubectl delete deployment $(TERRACOTTA) --ignore-not-found=true
 > kubectl delete service $(TERRACOTTA) --ignore-not-found=true
 
-deploy: terracotta
+deploy: login push terracotta
 > cat k8s/k8s-deployment.yaml | CONTAINER_TAG=$(CONTAINER_TAG) DEPLOYMENT=$(DEPLOYMENT) DEPLOYMENT_PORT=$(DEPLOYMENT_PORT) envsubst | kubectl apply -f -
 > cat k8s/k8s-service.yaml | DEPLOYMENT=$(DEPLOYMENT) DEPLOYMENT_PORT=$(DEPLOYMENT_PORT) NAMESPACE=$(NAMESPACE) envsubst | kubectl apply -f -
 > cat k8s/k8s-ingress.yaml | DEPLOYMENT=$(DEPLOYMENT) DEPLOYMENT_PORT=$(DEPLOYMENT_PORT) envsubst | kubectl apply -f -

@@ -50,7 +50,7 @@ public class ClusteredServlet extends HttpServlet {
           CacheManagerBuilder.newCacheManagerBuilder()
               .with(
                   ClusteringServiceConfigurationBuilder.cluster(
-                          URI.create("terracotta://localhost:9410/orbeon"))
+                          URI.create("terracotta://terracotta:9410/orbeon"))
                       .autoCreateOnReconnect(
                           cfg -> cfg.resourcePool(ORBEON, 500, MemoryUnit.MB, ORBEON)));
       final PersistentCacheManager cacheManager = clusteredCacheManagerBuilder.build(true);
