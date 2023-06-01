@@ -12,22 +12,25 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Serializable;
-import java.net.URI;
-import org.ehcache.Cache;
-import org.ehcache.PersistentCacheManager;
-import org.ehcache.clustered.client.config.builders.ClusteredResourcePoolBuilder;
-import org.ehcache.clustered.client.config.builders.ClusteredStoreConfigurationBuilder;
-import org.ehcache.clustered.client.config.builders.ClusteringServiceConfigurationBuilder;
-import org.ehcache.clustered.common.Consistency;
-import org.ehcache.config.CacheConfiguration;
-import org.ehcache.config.builders.CacheConfigurationBuilder;
-import org.ehcache.config.builders.CacheManagerBuilder;
-import org.ehcache.config.builders.ResourcePoolsBuilder;
-import org.ehcache.config.units.MemoryUnit;
-// import javax.cache.Cache;
-// import javax.cache.CacheManager;
-// import javax.cache.Caching;
-// import javax.cache.spi.CachingProvider;
+// import java.net.URL;
+// import java.time.Duration;
+// import org.ehcache.Cache;
+// import org.ehcache.CacheManager;
+// import org.ehcache.PersistentCacheManager;
+// import org.ehcache.clustered.client.config.builders.ClusteredResourcePoolBuilder;
+// import org.ehcache.clustered.client.config.builders.ClusteredStoreConfigurationBuilder;
+// import org.ehcache.clustered.client.config.builders.ClusteringServiceConfigurationBuilder;
+// import org.ehcache.clustered.common.Consistency;
+// import org.ehcache.config.CacheConfiguration;
+// import org.ehcache.config.builders.CacheConfigurationBuilder;
+// import org.ehcache.config.builders.CacheManagerBuilder;
+// import org.ehcache.config.builders.ExpiryPolicyBuilder;
+// import org.ehcache.config.builders.ResourcePoolsBuilder;
+// import org.ehcache.config.units.MemoryUnit;
+import javax.cache.Cache;
+import javax.cache.CacheManager;
+import javax.cache.Caching;
+import javax.cache.spi.CachingProvider;
 
 @WebServlet("/tomcat")
 public class ClusteredServlet extends HttpServlet {
@@ -46,48 +49,48 @@ public class ClusteredServlet extends HttpServlet {
     }
     // tbd make this configurable
     try {
-      final CacheManagerBuilder<PersistentCacheManager> clusteredCacheManagerBuilder =
-          CacheManagerBuilder.newCacheManagerBuilder()
-              .with(
-                  ClusteringServiceConfigurationBuilder.cluster(
-                          URI.create("terracotta://terracotta:9410/orbeon"))
-                      .autoCreateOnReconnect(
-                          cfg -> cfg.resourcePool(ORBEON, 500, MemoryUnit.MB, ORBEON)));
-      final PersistentCacheManager cacheManager = clusteredCacheManagerBuilder.build(true);
 
-      CacheConfiguration<String, Serializable> cfg =
-          CacheConfigurationBuilder.newCacheConfigurationBuilder(
-                  String.class,
-                  Serializable.class,
-                  ResourcePoolsBuilder.newResourcePoolsBuilder()
-                      .heap(8, MemoryUnit.MB)
-                      .with(
-                          ClusteredResourcePoolBuilder.clusteredDedicated(
-                              ORBEON, 10, MemoryUnit.MB)))
-              .add(ClusteredStoreConfigurationBuilder.withConsistency(Consistency.STRONG))
-              .build();
-      cache = cacheManager.createCache(cacheName, cfg);
+      // configuration via native ehcache xml: (works!)
+      //      final URL myUrl = getClass().getResource("/ehcache.distributed.xml");
+      //      XmlConfiguration xmlConfig = new XmlConfiguration(myUrl);
+      //      CacheManager cacheManager = CacheManagerBuilder.newCacheManager(xmlConfig);
+      //      cacheManager.init();
+      //      cache = cacheManager.getCache(ORBEON, String.class, Serializable.class);
 
-      // jcache only via config (no terracotta it seems)
-      // example xml cluster config barfs on parse:
-      // Caused by: org.xml.sax.SAXParseException; systemId:
-      // file:/var/home/dak/development/projects/orbeon/tomcat-ehcache/webapps/ROOT/WEB-INF/classes/ehcache.distributed.xml; lineNumber: 7; columnNumber: 21; cvc-complex-type.2.4.d: Invalid content was found starting with element 'tc:cluster'. No child element is expected at this point.
-      //	at
-      // java.xml/com.sun.org.apache.xerces.internal.util.ErrorHandlerWrapper.createSAXParseException(ErrorHandlerWrapper.java:204)
-      //	at
-      // java.xml/com.sun.org.apache.xerces.internal.util.ErrorHandlerWrapper.error(ErrorHandlerWrapper.java:135)
-      //	at
-      // java.xml/com.sun.org.apache.xerces.internal.impl.XMLErrorReporter.reportError(XMLErrorReporter.java:396)
-      //	at
-      // java.xml/com.sun.org.apache.xerces.internal.impl.XMLErrorReporter.reportError(XMLErrorReporter.java:327)
-      //	at
-      // java.xml/com.sun.org.apache.xerces.internal.impl.XMLErrorReporter.reportError(XMLErrorReporter.java:284)
-      //      CachingProvider cachingProvider = Caching.getCachingProvider();
-      //      CacheManager manager =
-      //          cachingProvider.getCacheManager(
-      //              getClass().getResource("/ehcache.distributed.xml").toURI(),
-      //              getClass().getClassLoader());
-      //      cache = manager.getCache(cacheName, String.class, Serializable.class);
+      // configuration via code: (works!)
+      //      final CacheManagerBuilder<PersistentCacheManager> clusteredCacheManagerBuilder =
+      //          CacheManagerBuilder.newCacheManagerBuilder()
+      //              .with(
+      //                  ClusteringServiceConfigurationBuilder.cluster(
+      //                          URI.create("terracotta://localhost:9410/orbeon"))
+      //                      .autoCreateOnReconnect(
+      //                          cfg -> cfg.resourcePool(ORBEON, 500, MemoryUnit.MB, ORBEON)));
+      //      final PersistentCacheManager cacheManager = clusteredCacheManagerBuilder.build(true);
+      //
+      //      CacheConfiguration<String, Serializable> cfg =
+      //          CacheConfigurationBuilder.newCacheConfigurationBuilder(
+      //                  String.class,
+      //                  Serializable.class,
+      //                  ResourcePoolsBuilder.newResourcePoolsBuilder()
+      //                      .heap(8, MemoryUnit.MB)
+      //                      .with(
+      //                          ClusteredResourcePoolBuilder.clusteredDedicated(
+      //                              ORBEON, 10, MemoryUnit.MB)))
+      //              .add(ClusteredStoreConfigurationBuilder.withConsistency(Consistency.STRONG))
+      //              .withExpiry(ExpiryPolicyBuilder.timeToLiveExpiration(Duration.ofHours(12)))
+      //              .build();
+      //      cache = cacheManager.createCache(cacheName, cfg);
+      //
+      // generate a config:
+      //      System.out.println(new XmlConfiguration(cacheManager.getRuntimeConfiguration()));
+
+      // configuration via jsr107 jcache APIs: (works!)
+      CachingProvider cachingProvider = Caching.getCachingProvider();
+      CacheManager cacheManager =
+          cachingProvider.getCacheManager(
+              getClass().getResource("/ehcache.distributed.xml").toURI(),
+              getClass().getClassLoader());
+      cache = cacheManager.getCache(ORBEON, String.class, Serializable.class);
     } catch (Exception e) {
       e.printStackTrace();
       System.err.println("Unable to configure Ehcache JCache implementation");
